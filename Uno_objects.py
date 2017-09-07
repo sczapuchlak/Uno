@@ -22,25 +22,22 @@ class Player(object):
 
     # def get_hand(self): #method needed to return hand dictionary, NEEDS WORK>
 
-#to do/HAND? - add dealt hand, play a card, add the discarded cards
-#clear() will clear the dictionary
-#pop-specific value returned/ popitem- random value returned/ items shows all keys/values
+#clear() will clear
 #invitation to start/ instructions to Quit game
-#for testing...not working
-#need to import deck/hand, etc??
-# print("Sonja") #for testing
+
+# print("Test") #for testing
 
 def main():
     #create the deck from the Deck class
     uno_deck = Deck()
-    print(uno_deck)#testing.  it works.
+    # print(uno_deck) #un comment for testing.  it works.
     player_name = input("Ready to play! What's yer name? ")
     #validation, check for empty string
     current_player = Player(player_name, Hand())#create an object from the Player class
-    print("Welcome", current_player.name, "Let's Play Uno...")
+    print("Welcome", current_player.name + ",", "here are your cards...")
     #create a hand for the current player
     uno_deck.drawCards(current_player._hand, 5)
-    print(current_player._hand)
+    print(current_player._hand) #comment to keep the hand hidden
     # print("Sonja")
     # print(my_name)
 

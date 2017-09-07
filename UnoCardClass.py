@@ -4,7 +4,7 @@ class Card(object):
     #this class deck will represent the uno card class
     cardColor = ['Red', 'Yellow', 'Green', 'Blue']
     cardNumber = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-
+    #TODO: Add wilds, skip, reverse and draw X card cards
     def __init__(self, color , number):
         self.color = color
         self.number = number
@@ -26,10 +26,11 @@ class Deck(object):
     def __init__(self):
         self.deck = []
         # adds all the cards to the deck
-        for color in range(4):
-            for number in range(1, 10):
-                card = Card(color, number)
-                self.deck.append(card)
+        for i in range(2):
+            for color in range(4):
+                for number in range(1, 10):
+                    card = Card(color, number)
+                    self.deck.append(card)
 
     # this returns a string which is readable for the user
     def __str__(self):

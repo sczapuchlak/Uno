@@ -15,8 +15,11 @@ def game_loop():
     game_won = False
     draw_pile.shuffleDeck()
 
+    number_of_bots = process_player_count_input()
+
     player_list.append(Player("Human"))
-    player_list.append(Player("Bot", bot=True))
+    for i in range(number_of_bots):
+        player_list.append(Player("Bot" + str(i+1), bot=True))
     discard_pile.append(draw_pile.removeAndReturnCard(0))
     for player in player_list:
         for i in range(10):
@@ -33,6 +36,15 @@ def game_loop():
     draw_pile = None
     discard_pile.clear()
     game_loop()
+
+
+def process_player_count_input():
+    p_c = str(input("How many players to play against?"))
+    if not p_c.isdigit():
+        print("Please enter only a number.")
+        return process_player_count_input()
+    else:
+        return int(p_c)
 
 
 def turn_loop(player_id):

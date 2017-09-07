@@ -48,10 +48,7 @@ def process_player_count_input():
 
 
 def turn_loop(player_id):
-    if draw_pile.get_card_count() == 0:
-        for i in range(len(discard_pile[:-2])):
-            draw_pile.append(discard_pile.pop(i))
-        draw_pile.shuffleDeck()
+    # reshuffle_discards()
     for player in player_list:
         if player.hand.get_card_count() == 0:
             global game_won
@@ -131,6 +128,7 @@ def draw_until_playable(hand, top_card, bot=False):
     if not playable:
         print("No playable cards! Drawing until playable...")
     while not playable:
+        reshuffle_discards()
         card_count += 1
         hand.addCardToHand(draw_pile.removeAndReturnCard())
         for card in hand.deck:
@@ -139,6 +137,13 @@ def draw_until_playable(hand, top_card, bot=False):
     if card_count > 0:
         print("Drew " + str(card_count) + " cards!")
     return
+
+
+def reshuffle_discards():
+    if draw_pile.get_card_count() == 0:
+        for i in range(len(discard_pile[:-2])):
+            draw_pile.addCardToHand(discard_pile.pop(0))
+        draw_pile.shuffleDeck()
 
 
 game_loop()

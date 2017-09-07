@@ -22,7 +22,7 @@ def game_loop():
         player_list.append(Player("Bot" + str(i+1), bot=True))
     discard_pile.append(draw_pile.removeAndReturnCard(0))
     for player in player_list:
-        for i in range(10):
+        for i in range(7):
             player.hand.addCardToHand(draw_pile.removeAndReturnCard())
     turn_loop(0)
     if game_won:
@@ -73,7 +73,7 @@ def turn_loop(player_id):
         draw_until_playable(hand, top_card)
         print("Cards in your hand:")
         print(list_player_cards(player_id))
-        card = validate_card_choice(input("Pick a card to play: "), hand)
+        card = validate_card_choice(input("Pick a card to play: "), hand) -1
         print("You played a " + str(hand.deck[card]))
         discard_pile.append(hand.removeAndReturnCard(card))
     print("\n----------\n")
@@ -115,7 +115,7 @@ def list_player_cards(player_id):
             card_string += "\t"
         elif i % 4 == 0:
             card_string += "\n"
-        card_string += str(i) + ": " + card
+        card_string += str(i +1) + ": " + card
     return card_string
 
 

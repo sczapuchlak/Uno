@@ -11,14 +11,14 @@ class Card(object):
 
    #this returns a string which is readable to display the card name
     def __str__(self):
-        return 'A %s %s' % (Card.cardColor[self.color],
+        return '%s %s' % (Card.cardColor[self.color],
                              Card.cardNumber[self.number])
 
     # this will return true if the other card is playable on top of this card
     # if it is not playable it will return false
     def isCardPlayable(self, other):
-        return (self.cardColor == other.cardColor or
-                self.cardNumber == other.cardNumber)
+        return (self.color == other.color or
+                int(self.number) == int(other.number))
 
 #this class defines and makes the deck
 class Deck(object):
@@ -54,6 +54,8 @@ class Deck(object):
     def removeAndReturnCard(self, i=-1):
         return self.deck.pop(i)
 
+    def get_card_count(self):
+        return len(self.deck)
 
     #this puts n amount of cards in the hand
     def drawCards(self, hand, num):

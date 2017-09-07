@@ -73,7 +73,7 @@ def turn_loop(player_id):
         draw_until_playable(hand, top_card)
         print("Cards in your hand:")
         print(list_player_cards(player_id))
-        card = validate_card_choice(input("Pick a card to play: "), hand) -1
+        card = validate_card_choice(input("Pick a card to play: "), hand)
         print("You played a " + str(hand.deck[card]))
         discard_pile.append(hand.removeAndReturnCard(card))
     print("\n----------\n")
@@ -88,13 +88,13 @@ def validate_card_choice(pick, hand):
     if not pick.isdigit():
         print("Invalid input. Please enter the number card you want to play, from the list above.")
         return validate_card_choice(input("Pick a card to play: "), hand)
-    pick_id = int(pick)
+    pick_id = int(pick) - 1
     if hand.get_card_count() <= pick_id:
         print("Invalid input. Please enter the number card you want to play, from the list above.")
         return validate_card_choice(input("Pick a card to play: "), hand)
     card = hand.deck[pick_id]
     if not card.isCardPlayable(top_card):
-        print("Card cannot be played! Choose another card.")
+        print(str(card) + " cannot be played! Choose another card.")
         return validate_card_choice(input("Pick a card to play: "), hand)
     return pick_id
 

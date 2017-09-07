@@ -14,6 +14,7 @@ def game_loop():
     draw_pile = Deck()
     game_won = False
     draw_pile.shuffleDeck()
+
     player_list.append(Player("Human"))
     player_list.append(Player("Bot", bot=True))
     discard_pile.append(draw_pile.removeAndReturnCard(0))
@@ -28,10 +29,17 @@ def game_loop():
                 victor = player
         print("Game over! " + victor.get_name() + " has won!")
     input("Press [ENTER] to play again!")
+    player_list.clear()
+    draw_pile = None
+    discard_pile.clear()
     game_loop()
 
 
 def turn_loop(player_id):
+    if draw_pile.get_card_count() == 0:
+        for i in range(len(discard_pile[:-2])):
+            draw_pile.append(discard_pile.pop(i))
+        draw_pile.shuffleDeck()
     for player in player_list:
         if player.hand.get_card_count() == 0:
             global game_won

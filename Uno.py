@@ -8,22 +8,32 @@ game_won = False
 
 
 def game_loop():
-
+    # This is the game loop.  This runs once per game and sets up all the variables.
+    # These variables are global and defined at the top.  We want to make sure we don't accidentally create local ones.
     global draw_pile
     global game_won
+    # Create a new deck
     draw_pile = Deck()
     game_won = False
     draw_pile.shuffleDeck()
-
+    # Get the desired player count
     number_of_bots = process_player_count_input()
-
+    # Append the human player
     player_list.append(Player("Human"))
     for i in range(number_of_bots):
         player_list.append(Player("Bot" + str(i+1), bot=True))
     discard_pile.append(draw_pile.removeAndReturnCard(0))
     for player in player_list:
-        for i in range(7):
-            player.hand.addCardToHand(draw_pile.removeAndReturnCard())
+        try:
+            for i in range(7):
+                player.hand.addCardToHand(draw_pile.removeAndReturnCard())
+        except IndexError:
+            # Not enough cards for this many players.
+            player_list.clear()
+            draw_pile = None
+            discard_pile.clear()
+            print("That's too many players!")
+            return game_loop()
     turn_loop(0)
     if game_won:
         victor = None
@@ -39,6 +49,7 @@ def game_loop():
 
 
 def process_player_count_input():
+    # Process the input for the number of bots to play against.
     p_c = str(input("How many players to play against?"))
     if not p_c.isdigit():
         print("Please enter only a number.")
@@ -48,14 +59,13 @@ def process_player_count_input():
 
 
 def turn_loop(player_id):
-    # reshuffle_discards()
+    # This loop will run perpetually until the game is over.
+    # It is meant to serve as a single turn for a single player.
     for player in player_list:
         if player.hand.get_card_count() == 0:
             global game_won
             game_won = True
             return
-    # This loop will run perpetually until the game is over.
-    # It is meant to serve as a single turn for a single player.
     player = player_list[player_id]
     top_card = discard_pile[-1]
     hand = player.hand
@@ -83,6 +93,7 @@ def turn_loop(player_id):
 
 
 def validate_card_choice(pick, hand):
+    # Ensures the player input corresponds to a valid and playable card.
     top_card = discard_pile[-1]
     pick = str(pick)
     if not pick.isdigit():
@@ -100,6 +111,7 @@ def validate_card_choice(pick, hand):
 
 
 def bot_logic(hand, top_card):
+    # Bot just chooses the first card they can play.
     for i in range(hand.get_card_count()):
         card = hand.deck[i]
         if card.isCardPlayable(top_card):
@@ -107,6 +119,7 @@ def bot_logic(hand, top_card):
 
 
 def list_player_cards(player_id):
+    # Returns a string formatted to cleanly show all the cards in a player's hand
     card_string = ''
     hand = player_list[player_id].hand
     for i in range(hand.get_card_count()):
@@ -120,6 +133,7 @@ def list_player_cards(player_id):
 
 
 def draw_until_playable(hand, top_card, bot=False):
+    # Draws cards continuously until a valid playable card is in the hand.
     playable = False
     card_count = 0
     for card in hand.deck:
@@ -140,6 +154,7 @@ def draw_until_playable(hand, top_card, bot=False):
 
 
 def reshuffle_discards():
+    # Shuffles the discard pile and uses that for the draw pile, leaving the top card
     if draw_pile.get_card_count() == 0:
         for i in range(len(discard_pile[:-2])):
             draw_pile.addCardToHand(discard_pile.pop(0))
